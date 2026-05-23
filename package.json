@@ -1,6 +1,6 @@
 {
   "name": "should-install",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AI-powered verdict on whether to install an npm package",
   "type": "module",
   "bin": {
@@ -33,11 +33,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adithyahebbar/shouldi.git"
+    "url": "git+https://github.com/Adithya-Adi/shouldi.git"
   },
-  "homepage": "https://github.com/adithyahebbar/shouldi#readme",
+  "homepage": "https://github.com/Adithya-Adi/shouldi#readme",
   "bugs": {
-    "url": "https://github.com/adithyahebbar/shouldi/issues"
+    "url": "https://github.com/Adithya-Adi/shouldi/issues"
   },
   "packageManager": "pnpm@10.30.3",
   "pnpm": {

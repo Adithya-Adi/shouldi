@@ -79,4 +79,4 @@ No real network calls in CI — all tests use fixtures or mocked spawn.
 
 ## Reporting bugs
 
-Open an issue at https://github.com/adithyahebbar/shouldi/issues
+Open an issue at https://github.com/Adithya-Adi/shouldi/issues
