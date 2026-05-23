@@ -38,14 +38,33 @@ Verified 2026-05-23 on Windows 11.
 ## gemini
 
 - **Status:** NOT INSTALLED on this machine
-- **Expected invocation:** `gemini -p "<prompt>"` (unverified)
+- **Detection:** `gemini --version` exits 0
+- **Invocation:** `gemini -p "<prompt>"` — prompt as positional argument after `-p` flag
+- **Notes:** Google Gemini CLI released June 2025. The `-p`/`--prompt` flag takes the
+  prompt as an argument (not stdin). Output is plain text. Unverified on this machine —
+  verify flag behaviour with `gemini --help` before relying on adapter.
 
 ## cursor-agent
 
 - **Status:** NOT INSTALLED on this machine
-- **Expected invocation:** `cursor-agent -p "<prompt>"` (unverified)
+- **Detection:** `cursor-agent --version` exits 0
+- **Invocation:** `cursor-agent -p "<prompt>"` — unverified, assumed from Cursor docs
+- **Notes:** Verify actual non-interactive flag when installed.
 
 ## aider
 
 - **Status:** NOT INSTALLED on this machine
-- **Expected invocation:** `aider --message "<prompt>" --yes --no-auto-commits` (unverified)
+- **Detection:** `aider --version` exits 0
+- **Invocation:** `aider --message "<prompt>" --yes --no-auto-commits`
+- **Notes:** aider is a coding assistant designed for editing, not Q&A. Output may
+  include verbose diff/patch text alongside the response. The verdict parser will
+  strip non-JSON content, but aider may refuse to return JSON reliably.
+  Consider `--no-git` flag to avoid git operations.
+
+## codex (end-to-end status)
+
+- **Detection:** Works (resolves .cmd wrapper to underlying node script)
+- **End-to-end:** FAILS on this machine — ChatGPT account auth, not API key.
+  Default model gpt-5.5 requires newer CLI; other models (o4-mini) unsupported
+  with ChatGPT account. Set `CODEX_MODEL` env var to override model selection.
+- **Workaround:** `CODEX_MODEL=o3 shouldi install <pkg> --with codex`
