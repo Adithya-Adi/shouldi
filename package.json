@@ -1,5 +1,5 @@
 {
-  "name": "shouldi",
+  "name": "should-install",
   "version": "0.1.0",
   "description": "AI-powered verdict on whether to install an npm package",
   "type": "module",

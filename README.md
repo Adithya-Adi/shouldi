@@ -1,6 +1,6 @@
 # shouldi
 
-> AI-powered verdict on whether to install an npm package — before you install it.
+AI-powered verdict on whether to install an npm package — before you install it.
 
 ```
 $ shouldi install moment
@@ -30,7 +30,7 @@ $ shouldi install moment
 ## Install
 
 ```bash
-npm install -g shouldi
+npm install -g should-install
 ```
 
 Requires Node.js 20+.
