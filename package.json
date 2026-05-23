@@ -4,22 +4,41 @@
   "description": "AI-powered verdict on whether to install an npm package",
   "type": "module",
   "bin": {
-    "shouldi": "./dist/index.js"
+    "shouldi": "dist/index.js"
   },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prepublishOnly": "pnpm test && pnpm build"
   },
   "keywords": [
     "npm",
     "cli",
     "ai",
-    "package-manager"
+    "package-manager",
+    "package-audit",
+    "llm",
+    "claude",
+    "ollama"
   ],
-  "author": "",
+  "author": "Adithya Hebbar",
   "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adithyahebbar/shouldi.git"
+  },
+  "homepage": "https://github.com/adithyahebbar/shouldi#readme",
+  "bugs": {
+    "url": "https://github.com/adithyahebbar/shouldi/issues"
+  },
   "packageManager": "pnpm@10.30.3",
   "pnpm": {
     "onlyBuiltDependencies": [
