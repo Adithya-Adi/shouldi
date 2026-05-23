@@ -1,0 +1,20 @@
+{
+  "name": "lodash",
+  "description": "Lodash modular utilities.",
+  "license": "MIT",
+  "repository": { "url": "git+https://github.com/lodash/lodash.git" },
+  "dist-tags": { "latest": "4.17.21" },
+  "time": {
+    "created": "2012-04-22T16:47:09.052Z",
+    "modified": "2023-01-15T08:00:00.000Z",
+    "4.17.21": "2021-02-20T15:42:16.891Z",
+    "4.17.20": "2020-10-14T03:10:07.544Z"
+  },
+  "maintainers": [{ "name": "jdalton" }],
+  "versions": {
+    "4.17.21": {
+      "dependencies": {},
+      "deprecated": false
+    }
+  }
+}

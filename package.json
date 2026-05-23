@@ -1,0 +1,43 @@
+{
+  "name": "shouldi",
+  "version": "0.1.0",
+  "description": "AI-powered verdict on whether to install an npm package",
+  "type": "module",
+  "bin": {
+    "shouldi": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "npm",
+    "cli",
+    "ai",
+    "package-manager"
+  ],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.30.3",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "tsup": "^8.5.1",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.4.0",
+    "@iarna/toml": "^2.2.5",
+    "commander": "^14.0.3",
+    "picocolors": "^1.1.1",
+    "zod": "^4.4.3"
+  }
+}

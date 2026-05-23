@@ -1,0 +1,15 @@
+node_modules/
+dist/
+*.js.map
+.cache/
+
+# smoke test files
+smoke-*.ts
+smoke-*.mjs
+
+# env
+.env
+.env.local
+
+
+.claude

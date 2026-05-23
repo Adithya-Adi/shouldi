@@ -1,0 +1,9 @@
+{
+  "versions": [
+    { "versionKey": { "version": "4.17.21" }, "isDefault": true }
+  ],
+  "scorecardV2": {
+    "score": 7.2,
+    "check": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "moment",
+  "description": "Parse, validate, manipulate, and display dates",
+  "license": "MIT",
+  "repository": { "url": "git+https://github.com/moment/moment.git" },
+  "dist-tags": { "latest": "2.29.4" },
+  "time": {
+    "created": "2011-10-18T15:04:04.824Z",
+    "modified": "2022-07-06T15:00:00.000Z",
+    "2.29.4": "2022-07-06T15:00:00.000Z"
+  },
+  "maintainers": [{ "name": "timrwood" }, { "name": "ichernev" }],
+  "versions": {
+    "2.29.4": {
+      "dependencies": {},
+      "deprecated": false
+    }
+  }
+}
