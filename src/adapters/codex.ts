@@ -11,11 +11,10 @@ export const codexAdapter: AIAdapter = {
   },
 
   invoke(prompt, { signal }) {
+    const model = process.env['CODEX_MODEL'];
+    const args = ['exec', '-', '--skip-git-repo-check', '--sandbox', 'read-only'];
+    if (model) args.push('--model', model);
     // codex exec - reads prompt from stdin; --skip-git-repo-check avoids git requirement
-    return runCapture(
-      'codex',
-      ['exec', '-', '--skip-git-repo-check', '--sandbox', 'read-only'],
-      { signal, adapterId: 'codex', stdin: prompt },
-    );
+    return runCapture('codex', args, { signal, adapterId: 'codex', stdin: prompt });
   },
 };

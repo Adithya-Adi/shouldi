@@ -1,19 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { EventEmitter } from 'node:events';
 
-// Mock child_process before importing the adapter
 vi.mock('node:child_process', async (importOriginal) => {
   const actual = await importOriginal<typeof import('node:child_process')>();
   return { ...actual, spawn: vi.fn(), execFileSync: vi.fn() };
 });
-// Mock fs to skip Windows-specific resolveCmd
 vi.mock('node:fs', async (importOriginal) => {
   const actual = await importOriginal<typeof import('node:fs')>();
   return { ...actual, readFileSync: vi.fn(), existsSync: vi.fn() };
 });
 
 import { spawn, execFileSync } from 'node:child_process';
-import { claudeAdapter } from '../../src/adapters/claude.js';
+import { codexAdapter } from '../../src/adapters/codex.js';
 
 function makeProc(stdout: string, exitCode = 0) {
   const proc = new EventEmitter() as NodeJS.EventEmitter & {
@@ -26,7 +24,6 @@ function makeProc(stdout: string, exitCode = 0) {
   proc.stderr = new EventEmitter();
   proc.stdin = { write: vi.fn(), end: vi.fn() };
   proc.kill = vi.fn();
-  // Emit stdout and close asynchronously
   setTimeout(() => {
     proc.stdout.emit('data', Buffer.from(stdout));
     proc.emit('close', exitCode);
@@ -34,45 +31,41 @@ function makeProc(stdout: string, exitCode = 0) {
   return proc;
 }
 
-describe('claudeAdapter', () => {
+describe('codexAdapter', () => {
   beforeEach(() => {
     vi.mocked(spawn).mockReset();
-    vi.mocked(execFileSync).mockImplementation(() => {
-      throw new Error('not on Windows');
-    });
+    vi.mocked(execFileSync).mockImplementation(() => { throw new Error('not windows'); });
+    delete process.env['CODEX_MODEL'];
   });
 
-  it('detects claude via --version exit 0', async () => {
+  it('detects codex via --version', async () => {
     const proc = makeProc('', 0);
     vi.mocked(spawn).mockReturnValue(proc as unknown as ReturnType<typeof spawn>);
-    const found = await claudeAdapter.detect();
-    expect(found).toBe(true);
-    expect(spawn).toHaveBeenCalledWith('claude', ['--version'], expect.objectContaining({ stdio: 'ignore' }));
+    expect(await codexAdapter.detect()).toBe(true);
+    expect(spawn).toHaveBeenCalledWith('codex', ['--version'], expect.anything());
   });
 
-  it('returns false when claude exits non-zero', async () => {
-    const proc = makeProc('', 1);
-    vi.mocked(spawn).mockReturnValue(proc as unknown as ReturnType<typeof spawn>);
-    const found = await claudeAdapter.detect();
-    expect(found).toBe(false);
-  });
-
-  it('invokes claude -p with prompt via stdin', async () => {
+  it('invokes codex exec with stdin and required flags', async () => {
     const proc = makeProc('{"decision":"yes"}');
     vi.mocked(spawn).mockReturnValue(proc as unknown as ReturnType<typeof spawn>);
-    const result = await claudeAdapter.invoke('test prompt', {});
+    await codexAdapter.invoke('test', {});
     expect(spawn).toHaveBeenCalledWith(
-      'claude',
-      ['-p'],
+      'codex',
+      ['exec', '-', '--skip-git-repo-check', '--sandbox', 'read-only'],
       expect.objectContaining({ stdio: ['pipe', 'pipe', 'pipe'] }),
     );
-    expect(proc.stdin.write).toHaveBeenCalledWith('test prompt', 'utf8');
-    expect(result).toBe('{"decision":"yes"}');
+    expect(proc.stdin.write).toHaveBeenCalledWith('test', 'utf8');
   });
 
-  it('rejects when claude exits non-zero', async () => {
-    const proc = makeProc('', 1);
+  it('appends --model when CODEX_MODEL env set', async () => {
+    process.env['CODEX_MODEL'] = 'o4-mini';
+    const proc = makeProc('{}');
     vi.mocked(spawn).mockReturnValue(proc as unknown as ReturnType<typeof spawn>);
-    await expect(claudeAdapter.invoke('test', {})).rejects.toThrow();
+    await codexAdapter.invoke('test', {}).catch(() => {});
+    expect(spawn).toHaveBeenCalledWith(
+      'codex',
+      ['exec', '-', '--skip-git-repo-check', '--sandbox', 'read-only', '--model', 'o4-mini'],
+      expect.anything(),
+    );
   });
 });
