@@ -5,7 +5,7 @@ import { collectAll } from '../collectors/index.js';
 import { reduceToSignals } from '../signals/reduce.js';
 import { buildPrompt } from '../prompt/build.js';
 import { parseVerdict, RETRY_SUFFIX } from '../prompt/parse.js';
-import { NoAdapterError, AdapterNotOnPathError, VerdictParseError } from '../lib/errors.js';
+import { NoAdapterError, AdapterNotOnPathError, VerdictParseError, PackageNotFoundError, NetworkError } from '../lib/errors.js';
 import { log } from '../lib/logger.js';
 import type { Verdict } from '../prompt/schema.js';
 import type { Signals } from '../signals/types.js';
@@ -65,7 +65,24 @@ export async function runVerdict(pkg: string, opts: RunOpts = {}): Promise<Verdi
   }
 
   log(`Collecting signals for ${pkg}...`);
-  const raw = await collectAll(pkg);
+  let raw;
+  try {
+    raw = await collectAll(pkg);
+  } catch (err) {
+    throw new NetworkError(String(err));
+  }
+
+  // npm 404 = package doesn't exist
+  if (!raw.npm.ok) {
+    const errMsg = raw.npm.error ?? '';
+    if (errMsg.includes('404') || errMsg.includes('Not found')) {
+      throw new PackageNotFoundError(pkg);
+    }
+    if (errMsg.includes('network') || errMsg.includes('fetch')) {
+      throw new NetworkError(errMsg);
+    }
+  }
+
   const signals = reduceToSignals(raw);
 
   if (signals.meta.collectorsFailed.length > 0) {
