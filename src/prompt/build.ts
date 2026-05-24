@@ -11,7 +11,7 @@ const SYSTEM_PROMPT = `You are a senior software engineer giving a quick, opinio
 
 Respond with ONLY valid JSON matching this schema. No prose. No markdown fences.
 
-{"decision":"yes"|"caution"|"no","headline":"<one sentence <100 chars>","reasons":["<2-4 items <120 chars each>"],"alternatives":[{"name":"<pkg>","why":"<80 chars>"}],"confidence":"low"|"medium"|"high"}`;
+{"decision":"yes"|"caution"|"no","headline":"<one sentence <100 chars>","reasons":["<2-4 items <120 chars each>"],"alternatives":[{"name":"<exact npm registry package name — all lowercase, no spaces, exactly as typed in npm install>","why":"<80 chars>"}],"confidence":"low"|"medium"|"high"}`;
 
 export function buildPrompt(signals: Signals): string {
   const compact = JSON.stringify(signals);

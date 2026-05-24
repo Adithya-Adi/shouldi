@@ -6,6 +6,8 @@ import { registerAuditCommand } from './commands/audit.js';
 import { registerWhyCommand } from './commands/why.js';
 import { registerConfigCommand } from './commands/config.js';
 import { registerAdaptersCommand } from './commands/adapters.js';
+import { registerHookCommand } from './commands/hook.js';
+import { registerInterceptCommand } from './commands/intercept.js';
 import pc from 'picocolors';
 
 const VERSION = '0.1.0';
@@ -33,6 +35,8 @@ registerAuditCommand(program);
 registerWhyCommand(program);
 registerConfigCommand(program);
 registerAdaptersCommand(program);
+registerHookCommand(program);
+registerInterceptCommand(program);
 
 // Top-level unhandled error — show clean message, never a stack trace to users
 process.on('uncaughtException', (err) => {

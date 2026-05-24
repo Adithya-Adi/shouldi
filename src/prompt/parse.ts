@@ -25,7 +25,13 @@ export function parseVerdict(raw: string, adapterId: string): Verdict {
     throw new VerdictParseError(adapterId);
   }
 
-  return result.data;
+  const verdict = result.data;
+  verdict.alternatives = verdict.alternatives.map((alt) => ({
+    ...alt,
+    name: alt.name.trim().toLowerCase(),
+  }));
+
+  return verdict;
 }
 
 export const RETRY_SUFFIX =
